@@ -30,12 +30,16 @@ async def main():
         async with agent.run_stream(
             user_input, message_history=message_history
         ) as result:
-            async for chunk in result.stream_text():
+            async for chunk in result.stream_text(delta=True):
                 console.print(chunk, end="")
             console.print()  # newline after stream
 
         message_history = result.all_messages()
 
 
-if __name__ == "__main__":
+def main_cli():
     asyncio.run(main())
+
+
+if __name__ == "__main__":
+    main_cli()

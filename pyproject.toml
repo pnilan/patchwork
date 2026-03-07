@@ -10,5 +10,8 @@ dependencies = [
     "python-dotenv",
 ]
 
+[project.scripts]
+patchwork = "main:main_cli"
+
 [dependency-groups]
 dev = ["pytest", "pytest-asyncio"]
