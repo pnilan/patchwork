@@ -10,7 +10,7 @@ class CCParameter(BaseModel):
     notes: str | None = None
 
     @model_validator(mode="after")
-    def check_range_order(self) -> "CCParameter":
+    def check_range_order(self) -> CCParameter:
         low, high = self.value_range
         if low > high:
             raise ValueError(f"value_range low ({low}) must be <= high ({high})")

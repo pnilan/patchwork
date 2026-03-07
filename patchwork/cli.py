@@ -18,7 +18,8 @@ async def main():
 
     console.print("[bold]patchwork[/bold] — synth research agent\n")
     if synths:
-        console.print(f"[dim]loaded {len(synths)} synth(s): {', '.join(s.name for s in synths.values())}[/dim]\n")
+        synth_names = ", ".join(s.name for s in synths.values())
+        console.print(f"[dim]loaded {len(synths)} synth(s): {synth_names}[/dim]\n")
     else:
         console.print("[dim]no synth definitions found in synths/[/dim]\n")
     message_history = []
@@ -27,7 +28,7 @@ async def main():
         while True:
             try:
                 user_input = console.input("[bold cyan]patch>[/bold cyan] ")
-            except (KeyboardInterrupt, EOFError):
+            except KeyboardInterrupt, EOFError:
                 console.print("\n[dim]goodbye[/dim]")
                 break
 

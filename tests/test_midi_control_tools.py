@@ -128,8 +128,7 @@ async def test_send_patch_partial_failure():
 @pytest.mark.asyncio
 async def test_list_midi_ports_empty():
     midi = MidiConnection()
-    with MagicMock() as mock_rtmidi:
-        midi.list_ports = MagicMock(return_value=[])
+    midi.list_ports = MagicMock(return_value=[])
     ctx = _make_ctx(midi=midi)
     result = await list_midi_ports(ctx)
     assert "No MIDI output ports found" in result
