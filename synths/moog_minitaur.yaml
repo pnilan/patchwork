@@ -1,0 +1,30 @@
+name: Minitaur
+manufacturer: Moog
+midi_channel: 2
+cc_map:
+  filter_cutoff:
+    cc: 22
+  filter_resonance:
+    cc: 23
+  filter_eg_amount:
+    cc: 24
+  osc2_frequency:
+    cc: 18
+  osc_mix:
+    cc: 15
+  vca_volume:
+    cc: 7
+  eg_attack:
+    cc: 105
+  eg_decay:
+    cc: 106
+  eg_sustain:
+    cc: 107
+  eg_release:
+    cc: 108
+  glide_rate:
+    cc: 5
+  legato_mode:
+    cc: 114
+    value_range: [0, 127]
+    notes: "0=off, 127=on"

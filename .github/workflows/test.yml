@@ -1,4 +1,4 @@
-name: Tests
+name: CI
 
 on:
   push:
@@ -7,6 +7,19 @@ on:
     branches: [main]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.14"
+      - name: Install system dependencies for python-rtmidi
+        run: sudo apt-get update && sudo apt-get install -y libasound2-dev libjack-jackd2-dev
+      - run: uv sync
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -14,5 +27,7 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.14"
+      - name: Install system dependencies for python-rtmidi
+        run: sudo apt-get update && sudo apt-get install -y libasound2-dev libjack-jackd2-dev
       - run: uv sync
       - run: uv run pytest .
