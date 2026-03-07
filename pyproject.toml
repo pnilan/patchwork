@@ -11,7 +11,7 @@ dependencies = [
 ]
 
 [project.scripts]
-patchwork = "main:main_cli"
+patchwork = "patchwork.cli:main_cli"
 
 [dependency-groups]
 dev = ["pytest", "pytest-asyncio"]

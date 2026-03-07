@@ -9,7 +9,6 @@ console = Console()
 
 
 async def main():
-    load_dotenv()
     console.print("[bold]patchwork[/bold] — synth research agent\n")
     message_history = []
 
@@ -27,17 +26,21 @@ async def main():
             console.print("[dim]goodbye[/dim]")
             break
 
-        async with agent.run_stream(
-            user_input, message_history=message_history
-        ) as result:
-            async for chunk in result.stream_text(delta=True):
-                console.print(chunk, end="")
-            console.print()  # newline after stream
+        try:
+            async with agent.run_stream(
+                user_input, message_history=message_history
+            ) as result:
+                async for chunk in result.stream_text(delta=True):
+                    console.print(chunk, end="", markup=False, highlight=False)
+                console.print()  # newline after stream
 
-        message_history = result.all_messages()
+            message_history = result.all_messages()
+        except Exception as e:
+            console.print(f"\n[bold red]error:[/bold red] {e}")
 
 
 def main_cli():
+    load_dotenv()
     asyncio.run(main())
 
 

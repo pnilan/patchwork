@@ -15,7 +15,7 @@ def test_agent_model():
 
 
 def test_system_prompt_contains_synth_context():
-    for synth in ["Minitaur", "TB-03", "Minilogue XD", "Roland S-1", "Blackbox"]:
+    for synth in ["Minitaur", "TB-03", "Minilogue XD", "Roland S-1", "Blackbox", "Digitakt", "Minibrute 2S"]:
         assert synth in SYSTEM_PROMPT, f"System prompt missing {synth}"
 
 
