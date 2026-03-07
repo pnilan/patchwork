@@ -23,11 +23,12 @@ class MidiConnection:
 
     def open(self, port_index: int = 0) -> str:
         """Open a MIDI output port by index. Returns the port name."""
+        self.close()
         self._out = rtmidi.MidiOut()
         ports = self._out.get_ports()
         if not ports:
             raise RuntimeError("No MIDI output ports available")
-        if port_index >= len(ports):
+        if not (0 <= port_index < len(ports)):
             raise ValueError(f"Port index {port_index} out of range (0-{len(ports) - 1})")
         self._out.open_port(port_index)
         self._port_name = ports[port_index]

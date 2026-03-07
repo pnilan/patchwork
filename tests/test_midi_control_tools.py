@@ -65,7 +65,10 @@ async def test_send_cc_unknown_synth():
 
 @pytest.mark.asyncio
 async def test_send_cc_unknown_parameter():
-    ctx = _make_ctx()
+    midi = MidiConnection()
+    midi._out = MagicMock()
+    midi._port_name = "Test Port"
+    ctx = _make_ctx(midi=midi)
     result = await send_cc(ctx, synth="testsynth", parameter="nonexistent", value=64)
     assert "Unknown parameter" in result
     assert "cutoff" in result

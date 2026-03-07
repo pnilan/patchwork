@@ -24,7 +24,10 @@ class SynthDefinition(BaseModel):
     cc_map: dict[str, CCParameter]
 
 
-def load_synth_definitions(synths_dir: Path = Path("synths")) -> dict[str, SynthDefinition]:
+_DEFAULT_SYNTHS_DIR = Path(__file__).resolve().parent.parent / "synths"
+
+
+def load_synth_definitions(synths_dir: Path = _DEFAULT_SYNTHS_DIR) -> dict[str, SynthDefinition]:
     """Load and validate all synth YAML files from the given directory."""
     definitions: dict[str, SynthDefinition] = {}
     if not synths_dir.exists():

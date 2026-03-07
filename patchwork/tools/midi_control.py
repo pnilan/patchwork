@@ -30,6 +30,9 @@ async def send_cc(
         available = ", ".join(ctx.deps.synths.keys())
         return f"Unknown synth '{synth}'. Available: {available}"
 
+    if not ctx.deps.midi.is_connected:
+        return "MIDI not connected. Use list_midi_ports to see available ports, then ask me to connect."
+
     param_key = parameter.lower().replace(" ", "_")
     param = synth_def.cc_map.get(param_key)
     if param is None:
@@ -39,9 +42,6 @@ async def send_cc(
     low, high = param.value_range
     if not (low <= value <= high):
         return f"Value {value} out of range for {parameter} ({low}-{high})"
-
-    if not ctx.deps.midi.is_connected:
-        return f"MIDI not connected. Use list_midi_ports to see available ports, then ask me to connect."
 
     ctx.deps.midi.send_cc(synth_def.midi_channel, param.cc, value)
     return f"Sent CC {param.cc} = {value} to {synth_def.name} ch.{synth_def.midi_channel} ({parameter})"
@@ -64,7 +64,7 @@ async def send_patch(
         return f"Unknown synth '{synth}'. Available: {available}"
 
     if not ctx.deps.midi.is_connected:
-        return f"MIDI not connected. Use list_midi_ports to see available ports, then ask me to connect."
+        return "MIDI not connected. Use list_midi_ports to see available ports, then ask me to connect."
 
     results = []
     for param_name, value in settings.items():
