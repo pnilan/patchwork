@@ -1,7 +1,17 @@
 [project]
 name = "patchwork"
 version = "0.1.0"
-description = "Add your description here"
+description = "A CLI agent for researching synth patches, controlling hardware synths via MIDI, and managing a patch library"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "pydantic-ai",
+    "rich",
+    "python-dotenv",
+]
+
+[project.scripts]
+patchwork = "patchwork.cli:main_cli"
+
+[dependency-groups]
+dev = ["pytest", "pytest-asyncio"]

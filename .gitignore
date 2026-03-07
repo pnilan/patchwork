@@ -10,3 +10,7 @@ wheels/
 .venv
 
 .claude/
+.env
+
+# Data
+data/
