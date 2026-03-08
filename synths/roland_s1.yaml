@@ -1,0 +1,93 @@
+name: S-1
+manufacturer: Roland
+midi_channel: 1
+cc_map:
+  # Oscillator
+  osc_range:
+    cc: 14
+  osc_range_fine_tune:
+    cc: 76
+  osc_square_level:
+    cc: 19
+  osc_saw_level:
+    cc: 20
+  osc_sub_level:
+    cc: 21
+  osc_sub_octave_type:
+    cc: 22
+  osc_noise_level:
+    cc: 23
+  osc_square_pw:
+    cc: 15
+  osc_pwm_source:
+    cc: 16
+  osc_pitch_bend_sens:
+    cc: 18
+  noise_mode:
+    cc: 78
+
+  # Filter
+  filter_cutoff:
+    cc: 74
+  filter_resonance:
+    cc: 71
+  filter_env_depth:
+    cc: 24
+  filter_lfo_depth:
+    cc: 25
+  filter_kb_follow:
+    cc: 26
+  filter_bend_sens:
+    cc: 27
+
+  # Envelope
+  env_attack:
+    cc: 73
+  env_decay:
+    cc: 75
+  env_sustain:
+    cc: 30
+  env_release:
+    cc: 72
+  env_mode:
+    cc: 28
+  env_trigger_mode:
+    cc: 29
+
+  # LFO
+  lfo_rate:
+    cc: 3
+  lfo_waveform:
+    cc: 12
+  lfo_pitch_depth:
+    cc: 13
+  lfo_mod_depth:
+    cc: 17
+  lfo_key_trigger:
+    cc: 105
+  lfo_sync_mode:
+    cc: 106
+
+  # Performance
+  portamento_time:
+    cc: 5
+  portamento_mode:
+    cc: 31
+  portamento_switch:
+    cc: 65
+  polyphony_mode:
+    cc: 80
+  keyboard_transpose:
+    cc: 77
+
+  # Effects
+  reverb_time:
+    cc: 89
+  reverb_level:
+    cc: 91
+  delay_time:
+    cc: 90
+  delay_level:
+    cc: 92
+  chorus_type:
+    cc: 93

@@ -1,30 +1,104 @@
 name: Minitaur
 manufacturer: Moog
-midi_channel: 2
+midi_channel: 16
 cc_map:
-  filter_cutoff:
-    cc: 22
-  filter_resonance:
-    cc: 23
-  filter_eg_amount:
-    cc: 24
-  osc2_frequency:
-    cc: 18
-  osc_mix:
+  # Oscillators
+  vco1_level:
     cc: 15
+  vco2_level:
+    cc: 16
+  vco2_frequency:
+    cc: 17
+    notes: "64=center/unison"
+  vco2_beat:
+    cc: 18
+    notes: "64=center, fine detune"
+  vco1_wave:
+    cc: 70
+    notes: "0-63=saw, 64-127=square"
+  vco2_wave:
+    cc: 71
+    notes: "0-63=saw, 64-127=square"
+  hard_sync:
+    cc: 80
+    notes: "0-63=off, 64-127=on"
+
+  # Filter
+  filter_cutoff:
+    cc: 19
+  filter_resonance:
+    cc: 21
+  filter_eg_amount:
+    cc: 22
+  filter_kb_tracking:
+    cc: 20
+    notes: "default 32 (~50%)"
+
+  # Filter envelope
+  vcf_attack:
+    cc: 23
+  vcf_decay:
+    cc: 24
+    notes: "shared decay/release"
+  vcf_sustain:
+    cc: 25
+
+  # Amp envelope
+  vca_attack:
+    cc: 28
+  vca_decay:
+    cc: 29
+    notes: "shared decay/release"
+  vca_sustain:
+    cc: 30
+
+  # Amp
   vca_volume:
     cc: 7
-  eg_attack:
-    cc: 105
-  eg_decay:
-    cc: 106
-  eg_sustain:
-    cc: 107
-  eg_release:
-    cc: 108
+
+  # LFO
+  lfo_rate:
+    cc: 3
+  lfo_vcf_amount:
+    cc: 12
+  lfo_vco_amount:
+    cc: 13
+  lfo_shape:
+    cc: 85
+    notes: "0-25=tri, 26-51=sq, 52-76=saw, 77-101=s&h, 102-127=filter_eg"
+  lfo_midi_sync:
+    cc: 87
+    notes: "0-63=internal, 64-127=midi clock"
+  lfo_key_trigger:
+    cc: 82
+    notes: "0-63=off, 64-127=on"
+  lfo_vco2_only:
+    cc: 112
+    notes: "0-63=off, 64-127=on"
+
+  # Performance
   glide_rate:
     cc: 5
-  legato_mode:
-    cc: 114
-    value_range: [0, 127]
-    notes: "0=off, 127=on"
+  glide_switch:
+    cc: 65
+    notes: "0-63=off, 64-127=on"
+  glide_type:
+    cc: 92
+    notes: "0-42=linear, 43-85=time, 86-127=exponential"
+  glide_legato:
+    cc: 83
+    notes: "0-63=always, 64-127=legato only"
+  eg_trigger_mode:
+    cc: 73
+    notes: "0-42=legato, 43-85=off, 86-127=reset"
+  release_switch:
+    cc: 72
+    notes: "0-63=off, 64-127=on"
+
+  # Velocity
+  filter_vel_sens:
+    cc: 89
+    notes: "default 64 (~50%)"
+  vca_vel_sens:
+    cc: 90
+    notes: "default 64 (~50%)"
