@@ -1,6 +1,6 @@
 name: TB-03
 manufacturer: Roland
-midi_channel: 3
+midi_channel: 14
 cc_map:
   tuning:
     cc: 104

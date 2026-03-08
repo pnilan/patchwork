@@ -12,9 +12,9 @@ def test_minitaur_yaml_loads():
     synth = SynthDefinition(**data)
     assert synth.name == "Minitaur"
     assert synth.manufacturer == "Moog"
-    assert synth.midi_channel == 2
+    assert synth.midi_channel == 16
     assert "filter_cutoff" in synth.cc_map
-    assert synth.cc_map["filter_cutoff"].cc == 22
+    assert synth.cc_map["filter_cutoff"].cc == 19
 
 
 def test_tb03_yaml_loads():
@@ -22,9 +22,19 @@ def test_tb03_yaml_loads():
     synth = SynthDefinition(**data)
     assert synth.name == "TB-03"
     assert synth.manufacturer == "Roland"
-    assert synth.midi_channel == 3
+    assert synth.midi_channel == 14
     assert "cutoff" in synth.cc_map
     assert synth.cc_map["cutoff"].cc == 74
+
+
+def test_s1_yaml_loads():
+    data = yaml.safe_load((SYNTHS_DIR / "roland_s1.yaml").read_text())
+    synth = SynthDefinition(**data)
+    assert synth.name == "S-1"
+    assert synth.manufacturer == "Roland"
+    assert synth.midi_channel == 1
+    assert "filter_cutoff" in synth.cc_map
+    assert synth.cc_map["filter_cutoff"].cc == 74
 
 
 def test_all_synth_yamls_valid():
