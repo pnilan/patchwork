@@ -32,13 +32,16 @@ def _make_synth() -> SynthDefinition:
 def _make_ctx(
     midi: MidiConnection | None = None,
     synths: dict[str, SynthDefinition] | None = None,
+    patches=None,
 ) -> RunContext[PatchworkDeps]:
     if midi is None:
         midi = MidiConnection()
     if synths is None:
         synth = _make_synth()
         synths = {synth.name.lower(): synth}
-    deps = PatchworkDeps(midi=midi, synths=synths)
+    if patches is None:
+        patches = MagicMock()
+    deps = PatchworkDeps(midi=midi, synths=synths, patches=patches)
     return RunContext(deps=deps, model=MagicMock(), usage=RunUsage())
 
 
