@@ -108,6 +108,70 @@ async def test_save_patch_empty_description_stored_as_none(patch_lib):
 
 
 @pytest.mark.asyncio
+async def test_save_patch_value_out_of_range(patch_lib):
+    synth = SynthDefinition(
+        name="TestSynth",
+        manufacturer="TestCo",
+        midi_channel=1,
+        cc_map={
+            "special": CCParameter(cc=50, value_range=(0, 64)),
+        },
+    )
+    ctx = _make_ctx(synths={"testsynth": synth}, patches=patch_lib)
+    result = await save_patch(ctx, name="bass", synth="testsynth", settings={"special": 100})
+    assert "out of range" in result
+    assert "100" in result
+    # Verify nothing was saved
+    assert patch_lib.get("bass") is None
+
+
+@pytest.mark.asyncio
+async def test_save_patch_cross_synth_rejected(patch_lib):
+    synth2 = SynthDefinition(
+        name="OtherSynth",
+        manufacturer="OtherCo",
+        midi_channel=2,
+        cc_map={"volume": CCParameter(cc=7)},
+    )
+    synths = {
+        "testsynth": _make_synth(),
+        "othersynth": synth2,
+    }
+    ctx = _make_ctx(synths=synths, patches=patch_lib)
+    # Save "bass" for testsynth
+    await save_patch(ctx, name="bass", synth="testsynth", settings={"cutoff": 45})
+    # Try to save "bass" for a different synth
+    result = await save_patch(ctx, name="bass", synth="othersynth", settings={"volume": 100})
+    assert "already exists" in result
+    assert "testsynth" in result
+    # Verify original patch is unchanged
+    stored = patch_lib.get("bass")
+    assert stored is not None
+    assert stored.synth == "testsynth"
+
+
+@pytest.mark.asyncio
+async def test_save_patch_same_synth_overwrites(patch_lib):
+    ctx = _make_ctx(patches=patch_lib)
+    await save_patch(ctx, name="bass", synth="testsynth", settings={"cutoff": 45})
+    result = await save_patch(ctx, name="bass", synth="testsynth", settings={"cutoff": 90})
+    assert "Saved patch 'bass'" in result
+    stored = patch_lib.get("bass")
+    assert stored is not None
+    assert stored.settings["cutoff"] == 90
+
+
+@pytest.mark.asyncio
+async def test_save_patch_empty_settings(patch_lib):
+    ctx = _make_ctx(patches=patch_lib)
+    result = await save_patch(ctx, name="empty", synth="testsynth", settings={})
+    assert "Saved patch 'empty'" in result
+    stored = patch_lib.get("empty")
+    assert stored is not None
+    assert stored.settings == {}
+
+
+@pytest.mark.asyncio
 async def test_save_patch_with_description(patch_lib):
     ctx = _make_ctx(patches=patch_lib)
     await save_patch(ctx, name="bass", synth="testsynth", settings={"cutoff": 45}, description="A deep bass")
@@ -179,6 +243,31 @@ async def test_recall_patch_midi_not_connected(patch_lib):
     await save_patch(ctx, name="bass", synth="testsynth", settings={"cutoff": 45})
     result = await recall_patch(ctx, name="bass")
     assert "MIDI not connected" in result
+
+
+@pytest.mark.asyncio
+async def test_recall_patch_skips_out_of_range(patch_lib):
+    # Save a patch with a value that's valid for default range (0-127)
+    ctx = _make_ctx(patches=patch_lib)
+    await save_patch(ctx, name="bass", synth="testsynth", settings={"cutoff": 45})
+
+    # Now create a synth def where cutoff has a narrower range
+    narrow_synth = SynthDefinition(
+        name="TestSynth",
+        manufacturer="TestCo",
+        midi_channel=1,
+        cc_map={"cutoff": CCParameter(cc=74, value_range=(0, 30))},
+    )
+    midi = MidiConnection()
+    mock_out = MagicMock()
+    midi._out = mock_out
+    midi._port_name = "Test Port"
+
+    ctx2 = _make_ctx(midi=midi, synths={"testsynth": narrow_synth}, patches=patch_lib)
+    result = await recall_patch(ctx2, name="bass")
+    assert "Skipped 'cutoff'" in result
+    assert "out of range" in result
+    assert mock_out.send_message.call_count == 0
 
 
 @pytest.mark.asyncio

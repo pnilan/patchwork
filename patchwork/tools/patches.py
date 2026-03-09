@@ -24,21 +24,37 @@ async def save_patch(
         available = ", ".join(ctx.deps.synths.keys())
         return f"Unknown synth '{synth}'. Available: {available}"
 
+    # Reject cross-synth overwrites
+    existing = ctx.deps.patches.get(name)
+    if existing and existing.synth != synth_key:
+        return (
+            f"A patch named '{name}' already exists for {existing.synth}. "
+            f"Delete it first or choose a different name."
+        )
+
     # Validate parameter names and normalize keys to canonical form (lowercase, underscored)
     normalized_settings: dict[str, int] = {}
     invalid_params = []
+    out_of_range = []
     for param_name, value in settings.items():
         param_key = param_name.lower().replace(" ", "_")
-        if param_key not in synth_def.cc_map:
+        param = synth_def.cc_map.get(param_key)
+        if param is None:
             invalid_params.append(param_name)
         else:
-            normalized_settings[param_key] = value
+            low, high = param.value_range
+            if not (low <= value <= high):
+                out_of_range.append(f"{param_key}: {value} (valid: {low}-{high})")
+            else:
+                normalized_settings[param_key] = value
     if invalid_params:
         available = ", ".join(synth_def.cc_map.keys())
         return (
             f"Unknown parameter(s) for {synth_def.name}: {', '.join(invalid_params)}. "
             f"Available: {available}"
         )
+    if out_of_range:
+        return f"Value(s) out of range for {synth_def.name}: {'; '.join(out_of_range)}"
 
     patch = ctx.deps.patches.save(
         name=name,
@@ -74,7 +90,7 @@ async def load_patch(
         lines.append(f"  Description: {patch.description}")
     for param, value in patch.settings.items():
         lines.append(f"  {param} = {value}")
-    lines.append(f"  Saved: {patch.created_at:%Y-%m-%d %H:%M}")
+    lines.append(f"  Updated: {patch.updated_at:%Y-%m-%d %H:%M}")
     return "\n".join(lines)
 
 
@@ -100,8 +116,8 @@ async def recall_patch(
 
     if not ctx.deps.midi.is_connected:
         return (
-            "MIDI not connected. Use list_midi_ports to see available ports, "
-            "then ask me to connect."
+            "MIDI not connected. Use list_midi_ports to see available ports,"
+            " then ask me to connect."
         )
 
     results = []
@@ -109,6 +125,12 @@ async def recall_patch(
         param = synth_def.cc_map.get(param_name)
         if param is None:
             results.append(f"  Skipped '{param_name}' (not in current CC map)")
+            continue
+        low, high = param.value_range
+        if not (low <= value <= high):
+            results.append(
+                f"  Skipped '{param_name}': value {value} out of range ({low}-{high})"
+            )
             continue
         ctx.deps.midi.send_cc(synth_def.midi_channel, param.cc, value)
         results.append(f"  {param_name} = {value} (CC {param.cc})")

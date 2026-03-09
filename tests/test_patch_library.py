@@ -134,6 +134,14 @@ def test_description_none(patch_lib):
     assert loaded.description is None
 
 
+def test_operations_after_close(tmp_path):
+    lib = PatchLibrary(db_path=tmp_path / "test.db")
+    lib.open()
+    lib.close()
+    with pytest.raises(RuntimeError, match="Database not open"):
+        lib.save(name="test", synth="minitaur", settings={"cutoff": 50})
+
+
 def test_context_manager(tmp_path):
     db_path = tmp_path / "ctx.db"
     with PatchLibrary(db_path=db_path) as lib:
