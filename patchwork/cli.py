@@ -6,6 +6,7 @@ from rich.console import Console
 from patchwork.agent import agent
 from patchwork.deps import PatchworkDeps
 from patchwork.midi import MidiConnection
+from patchwork.patch_library import PatchLibrary
 from patchwork.synth_definitions import load_synth_definitions
 
 console = Console()
@@ -13,8 +14,10 @@ console = Console()
 
 async def main():
     midi = MidiConnection()
+    patches = PatchLibrary()
+    patches.open()
     synths = load_synth_definitions()
-    deps = PatchworkDeps(midi=midi, synths=synths)
+    deps = PatchworkDeps(midi=midi, synths=synths, patches=patches)
 
     console.print("[bold]patchwork[/bold] — synth research agent\n")
     if synths:
@@ -52,6 +55,7 @@ async def main():
                 console.print(f"\n[bold red]error:[/bold red] {e}")
     finally:
         midi.close()
+        patches.close()
 
 
 def main_cli():
