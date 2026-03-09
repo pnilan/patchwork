@@ -54,7 +54,9 @@ def _make_ctx(
 @pytest.mark.asyncio
 async def test_save_patch_valid(patch_lib):
     ctx = _make_ctx(patches=patch_lib)
-    result = await save_patch(ctx, name="bass", synth="testsynth", settings={"cutoff": 45, "resonance": 80})
+    result = await save_patch(
+        ctx, name="bass", synth="testsynth", settings={"cutoff": 45, "resonance": 80}
+    )
     assert "Saved patch 'bass'" in result
     assert "cutoff = 45" in result
     assert "resonance = 80" in result
@@ -174,7 +176,10 @@ async def test_save_patch_empty_settings(patch_lib):
 @pytest.mark.asyncio
 async def test_save_patch_with_description(patch_lib):
     ctx = _make_ctx(patches=patch_lib)
-    await save_patch(ctx, name="bass", synth="testsynth", settings={"cutoff": 45}, description="A deep bass")
+    await save_patch(
+        ctx, name="bass", synth="testsynth",
+        settings={"cutoff": 45}, description="A deep bass",
+    )
     stored = patch_lib.get("bass")
     assert stored is not None
     assert stored.description == "A deep bass"
@@ -183,7 +188,10 @@ async def test_save_patch_with_description(patch_lib):
 @pytest.mark.asyncio
 async def test_load_patch_exists(patch_lib):
     ctx = _make_ctx(patches=patch_lib)
-    await save_patch(ctx, name="bass", synth="testsynth", settings={"cutoff": 45, "resonance": 80}, description="Deep bass")
+    await save_patch(
+        ctx, name="bass", synth="testsynth",
+        settings={"cutoff": 45, "resonance": 80}, description="Deep bass",
+    )
     result = await load_patch(ctx, name="bass")
     assert "Patch 'bass'" in result
     assert "cutoff = 45" in result
