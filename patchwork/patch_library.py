@@ -95,9 +95,7 @@ class PatchLibrary:
 
     def get(self, name: str) -> Patch | None:
         """Get a patch by name. Returns None if not found."""
-        row = self._db.execute(
-            "SELECT * FROM patches WHERE name = ?", (name,)
-        ).fetchone()
+        row = self._db.execute("SELECT * FROM patches WHERE name = ?", (name,)).fetchone()
         if row is None:
             return None
         return self._row_to_patch(row)
@@ -110,9 +108,7 @@ class PatchLibrary:
                 (synth.lower(),),
             ).fetchall()
         else:
-            rows = self._db.execute(
-                "SELECT * FROM patches ORDER BY updated_at DESC"
-            ).fetchall()
+            rows = self._db.execute("SELECT * FROM patches ORDER BY updated_at DESC").fetchall()
         return [self._row_to_patch(row) for row in rows]
 
     def delete(self, name: str) -> bool:

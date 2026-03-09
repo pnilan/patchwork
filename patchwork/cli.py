@@ -31,7 +31,7 @@ async def main():
             while True:
                 try:
                     user_input = console.input("[bold cyan]patch>[/bold cyan] ")
-                except (KeyboardInterrupt, EOFError):
+                except KeyboardInterrupt, EOFError:
                     console.print("\n[dim]goodbye[/dim]")
                     break
 

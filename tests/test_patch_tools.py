@@ -177,8 +177,11 @@ async def test_save_patch_empty_settings(patch_lib):
 async def test_save_patch_with_description(patch_lib):
     ctx = _make_ctx(patches=patch_lib)
     await save_patch(
-        ctx, name="bass", synth="testsynth",
-        settings={"cutoff": 45}, description="A deep bass",
+        ctx,
+        name="bass",
+        synth="testsynth",
+        settings={"cutoff": 45},
+        description="A deep bass",
     )
     stored = patch_lib.get("bass")
     assert stored is not None
@@ -189,8 +192,11 @@ async def test_save_patch_with_description(patch_lib):
 async def test_load_patch_exists(patch_lib):
     ctx = _make_ctx(patches=patch_lib)
     await save_patch(
-        ctx, name="bass", synth="testsynth",
-        settings={"cutoff": 45, "resonance": 80}, description="Deep bass",
+        ctx,
+        name="bass",
+        synth="testsynth",
+        settings={"cutoff": 45, "resonance": 80},
+        description="Deep bass",
     )
     result = await load_patch(ctx, name="bass")
     assert "Patch 'bass'" in result

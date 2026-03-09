@@ -63,10 +63,7 @@ async def save_patch(
         description=description or None,
     )
     param_lines = [f"  {k} = {v}" for k, v in patch.settings.items()]
-    return (
-        f"Saved patch '{patch.name}' for {synth_def.name}:\n"
-        + "\n".join(param_lines)
-    )
+    return f"Saved patch '{patch.name}' for {synth_def.name}:\n" + "\n".join(param_lines)
 
 
 async def load_patch(
@@ -128,9 +125,7 @@ async def recall_patch(
             continue
         low, high = param.value_range
         if not (low <= value <= high):
-            results.append(
-                f"  Skipped '{param_name}': value {value} out of range ({low}-{high})"
-            )
+            results.append(f"  Skipped '{param_name}': value {value} out of range ({low}-{high})")
             continue
         ctx.deps.midi.send_cc(synth_def.midi_channel, param.cc, value)
         results.append(f"  {param_name} = {value} (CC {param.cc})")

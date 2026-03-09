@@ -74,8 +74,16 @@ agent = Agent(
     deps_type=PatchworkDeps,
     defer_model_check=True,
     tools=[
-        list_midi_ports, connect_midi, list_synths, send_cc, send_patch,
-        save_patch, load_patch, recall_patch, list_patches, delete_patch,
+        list_midi_ports,
+        connect_midi,
+        list_synths,
+        send_cc,
+        send_patch,
+        save_patch,
+        load_patch,
+        recall_patch,
+        list_patches,
+        delete_patch,
     ],
 )
 
