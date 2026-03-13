@@ -35,3 +35,10 @@ class TestSetupLogging:
     def test_logger_level_is_debug(self):
         logger = setup_logging()
         assert logger.level == logging.DEBUG
+
+    def test_subsequent_call_updates_handler_level(self):
+        logger = setup_logging(verbose=False)
+        assert logger.handlers[0].level == logging.INFO
+        setup_logging(verbose=True)
+        assert logger.handlers[0].level == logging.DEBUG
+        assert len(logger.handlers) == 1

@@ -85,3 +85,14 @@ class TestToolCallEventHandler:
 
         tool_records = [r for r in caplog.records if "tool call" in r.message]
         assert len(tool_records) == 2
+
+    @pytest.mark.asyncio
+    async def test_non_verbose_does_not_print_tool_indicator(self, logger, capsys):
+        handler = _make_event_handler(verbose=False, logger=logger)
+        event = _make_mock_tool_call_event("send_cc")
+        ctx = MagicMock()
+
+        await handler(ctx, _to_async_iterable([event]))
+
+        captured = capsys.readouterr()
+        assert "⚙" not in captured.out

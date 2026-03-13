@@ -33,8 +33,7 @@ def _make_event_handler(verbose: bool, logger: logging.Logger):
                     except Exception:
                         args = event.part.args
                     logger.debug("tool args: %s %s", tool_name, json.dumps(args, default=str))
-
-                console.print(f"[dim]⚙ {tool_name}[/dim]")
+                    console.print(f"[dim]⚙ {tool_name}[/dim]")
 
     return handle_events
 
