@@ -21,9 +21,7 @@ console = Console()
 def _make_event_handler(verbose: bool, logger: logging.Logger):
     """Return an event_stream_handler that logs tool calls."""
 
-    async def handle_events(
-        ctx: RunContext[PatchworkDeps], events: AsyncIterable
-    ) -> None:
+    async def handle_events(ctx: RunContext[PatchworkDeps], events: AsyncIterable) -> None:
         async for event in events:
             if isinstance(event, FunctionToolCallEvent):
                 tool_name = event.part.tool_name
