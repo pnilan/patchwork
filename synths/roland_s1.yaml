@@ -1,6 +1,6 @@
 name: S-1
 manufacturer: Roland
-midi_channel: 3
+midi_channel: 13
 cc_map:
   # ── Controls ──────────────────────────────────
   mod_wheel:
