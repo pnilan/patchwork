@@ -16,6 +16,7 @@ from patchwork.patch_library import PatchLibrary
 from patchwork.synth_definitions import load_synth_definitions
 
 console = Console()
+stderr_console = Console(stderr=True)
 
 
 def _make_event_handler(verbose: bool, logger: logging.Logger):
@@ -25,7 +26,7 @@ def _make_event_handler(verbose: bool, logger: logging.Logger):
         async for event in events:
             if isinstance(event, FunctionToolCallEvent):
                 tool_name = event.part.tool_name
-                logger.info("tool call: %s", tool_name)
+                stderr_console.print(f"[dim]\U0001f6e0\ufe0f tool call: {tool_name}[/dim]")
 
                 if verbose:
                     try:
@@ -33,7 +34,6 @@ def _make_event_handler(verbose: bool, logger: logging.Logger):
                     except Exception:
                         args = event.part.args
                     logger.debug("tool args: %s %s", tool_name, json.dumps(args, default=str))
-                    console.print(f"[dim]⚙ {tool_name}[/dim]")
 
     return handle_events
 
