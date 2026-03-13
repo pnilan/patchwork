@@ -33,15 +33,15 @@ def logger():
 
 class TestToolCallEventHandler:
     @pytest.mark.asyncio
-    async def test_logs_tool_name(self, logger, caplog):
+    async def test_logs_tool_name_to_stderr(self, logger, capsys):
         handler = _make_event_handler(verbose=False, logger=logger)
         event = _make_mock_tool_call_event("send_cc")
         ctx = MagicMock()
 
-        with caplog.at_level(logging.INFO, logger=logger.name):
-            await handler(ctx, _to_async_iterable([event]))
+        await handler(ctx, _to_async_iterable([event]))
 
-        assert any("send_cc" in record.message for record in caplog.records)
+        captured = capsys.readouterr()
+        assert "send_cc" in captured.err
 
     @pytest.mark.asyncio
     async def test_verbose_logs_args(self, logger, caplog):
@@ -72,7 +72,7 @@ class TestToolCallEventHandler:
         assert len(tool_records) == 0
 
     @pytest.mark.asyncio
-    async def test_handles_multiple_events(self, logger, caplog):
+    async def test_handles_multiple_events(self, logger, capsys):
         handler = _make_event_handler(verbose=False, logger=logger)
         events = [
             _make_mock_tool_call_event("list_synths"),
@@ -80,14 +80,14 @@ class TestToolCallEventHandler:
         ]
         ctx = MagicMock()
 
-        with caplog.at_level(logging.INFO, logger=logger.name):
-            await handler(ctx, _to_async_iterable(events))
+        await handler(ctx, _to_async_iterable(events))
 
-        tool_records = [r for r in caplog.records if "tool call" in r.message]
-        assert len(tool_records) == 2
+        captured = capsys.readouterr()
+        assert "list_synths" in captured.err
+        assert "send_cc" in captured.err
 
     @pytest.mark.asyncio
-    async def test_non_verbose_does_not_print_tool_indicator(self, logger, capsys):
+    async def test_tool_indicator_prints_to_stderr(self, logger, capsys):
         handler = _make_event_handler(verbose=False, logger=logger)
         event = _make_mock_tool_call_event("send_cc")
         ctx = MagicMock()
@@ -95,4 +95,5 @@ class TestToolCallEventHandler:
         await handler(ctx, _to_async_iterable([event]))
 
         captured = capsys.readouterr()
-        assert "⚙" not in captured.out
+        assert "\U0001f6e0\ufe0f" not in captured.out
+        assert "send_cc" in captured.err
