@@ -1,6 +1,6 @@
 name: S-1
 manufacturer: Roland
-midi_channel: 1
+midi_channel: 3
 cc_map:
   # ── Controls ──────────────────────────────────
   mod_wheel:
@@ -24,7 +24,7 @@ cc_map:
     cc: 3
   lfo_waveform:
     cc: 12
-    notes: "0-25=triangle, 26-51=sawtooth, 52-76=square, 77-102=random, 103-127=noise"
+    notes: "0-21=sawtooth, 22-42=inv-sawtooth, 43-63=triangle, 64-84=square, 85-106=random, 107-127=noise"
   lfo_mod_depth:
     cc: 17
   lfo_mode:
@@ -147,4 +147,4 @@ cc_map:
     cc: 104
   osc_draw_sw:
     cc: 107
-    notes: "0-63=off, 64-127=on"
+    notes: "0-42=off, 43-85=step, 86-127=slope"

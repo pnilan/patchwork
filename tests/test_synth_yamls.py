@@ -32,7 +32,7 @@ def test_s1_yaml_loads():
     synth = SynthDefinition(**data)
     assert synth.name == "S-1"
     assert synth.manufacturer == "Roland"
-    assert synth.midi_channel == 1
+    assert synth.midi_channel == 3
     assert len(synth.cc_map) == 54
     # Verify core parameters
     assert synth.cc_map["filter_cutoff"].cc == 74
