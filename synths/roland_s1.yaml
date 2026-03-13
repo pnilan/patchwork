@@ -2,11 +2,54 @@ name: S-1
 manufacturer: Roland
 midi_channel: 1
 cc_map:
-  # Oscillator
+  # ── Controls ──────────────────────────────────
+  mod_wheel:
+    cc: 1
+  portamento_time:
+    cc: 5
+  pan:
+    cc: 10
+    notes: "64=center"
+  expression:
+    cc: 11
+  damper_pedal:
+    cc: 64
+    notes: "0-63=off, 64-127=on"
+  portamento_switch:
+    cc: 65
+    notes: "0-63=off, 64-127=on"
+
+  # ── LFO ───────────────────────────────────────
+  lfo_rate:
+    cc: 3
+  lfo_waveform:
+    cc: 12
+    notes: "0-25=triangle, 26-51=sawtooth, 52-76=square, 77-102=random, 103-127=noise"
+  lfo_mod_depth:
+    cc: 17
+  lfo_mode:
+    cc: 79
+    notes: "0-63=normal, 64-127=fast"
+  lfo_key_trigger:
+    cc: 105
+    notes: "0-63=off, 64-127=on"
+  lfo_sync:
+    cc: 106
+    notes: "0-63=off, 64-127=on"
+
+  # ── Oscillator ────────────────────────────────
+  osc_lfo_pitch:
+    cc: 13
   osc_range:
     cc: 14
-  osc_range_fine_tune:
-    cc: 76
+    notes: "0-21=64ft, 22-42=32ft, 43-63=16ft, 64-84=8ft, 85-106=4ft, 107-127=2ft"
+  osc_square_pw:
+    cc: 15
+  osc_pwm_source:
+    cc: 16
+    notes: "0-42=manual, 43-85=LFO, 86-127=envelope"
+  osc_pitch_bend_sens:
+    cc: 18
   osc_square_level:
     cc: 19
   osc_saw_level:
@@ -15,18 +58,17 @@ cc_map:
     cc: 21
   osc_sub_octave_type:
     cc: 22
+    notes: "0-42=-2oct-asym, 43-85=-2oct, 86-127=-1oct"
   osc_noise_level:
     cc: 23
-  osc_square_pw:
-    cc: 15
-  osc_pwm_source:
-    cc: 16
-  osc_pitch_bend_sens:
-    cc: 18
+  osc_range_fine_tune:
+    cc: 76
+    notes: "64=center"
   noise_mode:
     cc: 78
+    notes: "0-63=pink, 64-127=white"
 
-  # Filter
+  # ── Filter ────────────────────────────────────
   filter_cutoff:
     cc: 74
   filter_resonance:
@@ -40,7 +82,7 @@ cc_map:
   filter_bend_sens:
     cc: 27
 
-  # Envelope
+  # ── Envelope ──────────────────────────────────
   env_attack:
     cc: 73
   env_decay:
@@ -49,45 +91,60 @@ cc_map:
     cc: 30
   env_release:
     cc: 72
-  env_mode:
+  amp_env_mode:
     cc: 28
+    notes: "0-63=gate, 64-127=envelope"
   env_trigger_mode:
     cc: 29
+    notes: "0-42=LFO, 43-85=gate, 86-127=gate+trig"
 
-  # LFO
-  lfo_rate:
-    cc: 3
-  lfo_waveform:
-    cc: 12
-  lfo_pitch_depth:
-    cc: 13
-  lfo_mod_depth:
-    cc: 17
-  lfo_key_trigger:
-    cc: 105
-  lfo_sync_mode:
-    cc: 106
-
-  # Performance
-  portamento_time:
-    cc: 5
+  # ── Performance ───────────────────────────────
   portamento_mode:
     cc: 31
-  portamento_switch:
-    cc: 65
-  polyphony_mode:
-    cc: 80
+    notes: "0-42=off, 43-85=on, 86-127=auto"
   keyboard_transpose:
     cc: 77
+    notes: "64=center"
+  polyphony_mode:
+    cc: 80
+    notes: "0-31=mono, 32-63=unison, 64-95=poly, 96-127=chord"
 
-  # Effects
+  # ── Chord ─────────────────────────────────────
+  chord_voice_2_sw:
+    cc: 81
+    notes: "0-63=off, 64-127=on"
+  chord_voice_3_sw:
+    cc: 82
+    notes: "0-63=off, 64-127=on"
+  chord_voice_4_sw:
+    cc: 83
+    notes: "0-63=off, 64-127=on"
+  chord_voice_2_key_shift:
+    cc: 85
+  chord_voice_3_key_shift:
+    cc: 86
+  chord_voice_4_key_shift:
+    cc: 87
+
+  # ── Effects ───────────────────────────────────
   reverb_time:
     cc: 89
-  reverb_level:
-    cc: 91
   delay_time:
     cc: 90
+  reverb_level:
+    cc: 91
   delay_level:
     cc: 92
   chorus_type:
     cc: 93
+
+  # ── OSC Draw / Chop ──────────────────────────
+  osc_draw_multiply:
+    cc: 102
+  osc_chop_overtone:
+    cc: 103
+  osc_chop_comb:
+    cc: 104
+  osc_draw_sw:
+    cc: 107
+    notes: "0-63=off, 64-127=on"

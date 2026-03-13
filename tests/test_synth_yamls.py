@@ -33,8 +33,16 @@ def test_s1_yaml_loads():
     assert synth.name == "S-1"
     assert synth.manufacturer == "Roland"
     assert synth.midi_channel == 1
-    assert "filter_cutoff" in synth.cc_map
+    assert len(synth.cc_map) == 54
+    # Verify core parameters
     assert synth.cc_map["filter_cutoff"].cc == 74
+    assert synth.cc_map["polyphony_mode"].cc == 80
+    assert synth.cc_map["polyphony_mode"].notes == "0-31=mono, 32-63=unison, 64-95=poly, 96-127=chord"
+    # Verify draw/chop section present
+    assert synth.cc_map["osc_draw_multiply"].cc == 102
+    assert synth.cc_map["osc_draw_sw"].cc == 107
+    # Verify chord section present
+    assert synth.cc_map["chord_voice_2_sw"].cc == 81
 
 
 def test_all_synth_yamls_valid():
