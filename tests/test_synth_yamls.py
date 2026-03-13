@@ -37,7 +37,8 @@ def test_s1_yaml_loads():
     # Verify core parameters
     assert synth.cc_map["filter_cutoff"].cc == 74
     assert synth.cc_map["polyphony_mode"].cc == 80
-    assert synth.cc_map["polyphony_mode"].notes == "0-31=mono, 32-63=unison, 64-95=poly, 96-127=chord"
+    expected_notes = "0-31=mono, 32-63=unison, 64-95=poly, 96-127=chord"
+    assert synth.cc_map["polyphony_mode"].notes == expected_notes
     # Verify draw/chop section present
     assert synth.cc_map["osc_draw_multiply"].cc == 102
     assert synth.cc_map["osc_draw_sw"].cc == 107
